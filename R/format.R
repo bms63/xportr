@@ -20,13 +20,13 @@
 #'   BRTHDT = c(1, 1, 2)
 #' )
 #' 
-#' metacore <- data.frame(
+#' metadata <- data.frame(
 #'   dataset = c("adsl", "adsl"),
 #'   variable = c("USUBJID", "BRTHDT"),
 #'   format = c(NA, "DATE9.")
 #' )
 #'
-#' adsl <- xportr_format(adsl, metacore)
+#' adsl <- xportr_format(adsl, metadata)
 xportr_format <- function(.df, metacore, domain = NULL, verbose = getOption("xportr.format_verbose", "none")) {
   
   domain_name <- getOption("xportr.domain_name")

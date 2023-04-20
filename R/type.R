@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-#' metacore <- data.frame(
+#' metadata <- data.frame(
 #'   dataset = "test",
 #'   variable = c("Subj", "Param", "Val", "NotUsed"),
 #'   type = c("numeric", "character", "numeric", "character")
@@ -30,7 +30,7 @@
 #'  Param = c("param1", "param2", "param3")
 #' )
 #'
-#' df2 <- xportr_type(.df, metacore, "test")
+#' df2 <- xportr_type(.df, metadata, "test")
 xportr_type <- function(.df, metacore, domain = NULL,
                         verbose = getOption('xportr.type_verbose', 'none')){
   

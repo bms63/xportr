@@ -20,12 +20,12 @@
 #'   SEX = c("M", "F", "M")
 #' )
 #' 
-#' metacore <- data.frame(
+#' metadata <- data.frame(
 #'   dataset = c("adsl", "adae"),
 #'   label = c("Subject-Level Analysis", "Adverse Events Analysis")
 #' )
 #'
-#' adsl <- xportr_df_label(adsl, metacore)
+#' adsl <- xportr_df_label(adsl, metadata)
 xportr_df_label <- function(.df, metacore, domain = NULL) {
   
   domain_name <- getOption("xportr.df_domain_name")

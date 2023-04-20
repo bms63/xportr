@@ -22,13 +22,13 @@
 #'   SEX = c("M", "F", "M")
 #' )
 #' 
-#' metacore <- data.frame(
+#' metadata <- data.frame(
 #'   dataset = "adsl",
 #'   variable = c("USUBJID", "SITEID", "AGE", "SEX"),
 #'   label = c("Unique Subject Identifier", "Study Site Identifier", "Age", "Sex")
 #' )
 #'
-#' adsl <- xportr_label(adsl, metacore)
+#' adsl <- xportr_label(adsl, metadata)
 xportr_label <- function(.df, metacore, domain = NULL,
                          verbose = getOption("xportr.label_verbose", "none")) {
   

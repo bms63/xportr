@@ -20,13 +20,13 @@
 #'   BRTHDT = c(1, 1, 2)
 #' )
 #'
-#' metacore <- data.frame(
+#' metadata <- data.frame(
 #'   dataset = c("adsl", "adsl"),
 #'   variable = c("USUBJID", "BRTHDT"),
 #'   length = c(10, 8)
 #' )
 #' 
-#' adsl <- xportr_length(adsl, metacore)
+#' adsl <- xportr_length(adsl, metadata)
 xportr_length <- function(.df, metacore, domain = NULL,
                           verbose = getOption("xportr.length_verbose", "none")) {
   
