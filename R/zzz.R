@@ -13,6 +13,7 @@
     xportr.format_verbose = "none",
     xportr.label_verbose = "none",
     xportr.length_verbose = "none",
+    xportr.select_verbose = "none",
     xportr.type_verbose = "none",
     xportr.character_types = c(
       "character", "char", "text", "date", "posixct",
