@@ -161,3 +161,23 @@ var_ord_msg <- function(reordered_vars, moved_vars, verbose) {
     cli_h2("All variables in dataset are ordered")
   }
 }
+
+
+#' Utility for Selecting Variables
+#'
+#' Function to output user message about variables which are listed in the
+#' metadata but not available in the dataframe.
+#'
+#' @param miss_vars Variables in the metadata but not in the dataframe.
+#' @param verbose Provides additional messaging for user.
+#'
+#' @return Output to Console
+#' @export
+select_log <- function(miss_vars, verbose) {
+
+  cli_h2("Variable(s) in metadata but not in dataframe.")
+  message <- glue("Variable(s) from `metadata` not found in `.df`: ",
+                  paste0(glue("{ encode_vars(miss_vars) }"), collapse = "", sep = " "), ".")
+  xportr_logger(message = message, type = verbose)
+}
+
