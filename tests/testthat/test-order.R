@@ -128,3 +128,7 @@ test_that("xportr_order: Variable ordering messaging is correct", {
     )
   )
 })
+
+test_that("xportr_order: Gets warning when metadata has multiple rows with same variable", {
+  multiple_vars_in_spec_helper(xportr_order)
+})

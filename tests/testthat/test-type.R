@@ -135,3 +135,7 @@ test_that("xportr_type: works fine from metacore spec", {
   processed_df <- xportr_type(df, metacore_meta)
   expect_equal(processed_df$x, "1")
 })
+
+test_that("xportr_type: Gets warning when metadata has multiple rows with same variable", {
+  multiple_vars_in_spec_helper(xportr_type)
+})
