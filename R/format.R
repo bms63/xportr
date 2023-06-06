@@ -49,6 +49,8 @@ xportr_format <- function(.df, metacore, domain = NULL, verbose = getOption("xpo
       dplyr::filter(!!sym(domain_name) == domain & !is.na(!!sym(format_name)))
   } else {
     metadata <- metacore
+    # Common check for multiple variables name
+    check_multiple_var_specs(metadata, variable_name)
   }
 
   filtered_metadata <- metadata %>%

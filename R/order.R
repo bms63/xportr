@@ -47,6 +47,8 @@ xportr_order <- function(.df, metacore, domain = NULL, verbose = getOption("xpor
   } else {
     metadata <- metacore %>%
       dplyr::filter(!is.na(!!sym(order_name)))
+    # Common check for multiple variables name
+    check_multiple_var_specs(metadata, variable_name)
   }
 
   # Grabs vars from Spec and inputted dataset
