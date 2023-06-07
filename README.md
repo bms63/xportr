@@ -29,7 +29,7 @@ page](https://github.com/atorus-research/xportr/issues).
 
 ## Installation
 
-This package is available from CRAN and can be installed by running: 
+This package is available from CRAN and can be installed by running: asdf
 
 ``` r
 install.packages("xportr")
