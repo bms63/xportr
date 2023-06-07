@@ -6,24 +6,27 @@
 \usage{
 xportr_type(
   .df,
-  metacore,
+  metadata = NULL,
   domain = NULL,
-  verbose = getOption("xportr.type_verbose", "none")
+  verbose = getOption("xportr.length_verbose", "none"),
+  metacore = deprecated()
 )
 }
 \arguments{
 \item{.df}{An R object with columns that can be coerced}
 
-\item{metacore}{Either a data.frame that has the names of all possible columns
+\item{metadata}{Either a data.frame that has the names of all possible columns
 and their types, or a \code{Metacore} object from the \code{Metacore} package. Required
 column names are dataset, variables, type}
 
 \item{domain}{Name of the dataset. Ex ADAE/DM. This will be used to subset
-the metacore object. If none is passed it is assumed to be the name of the
+the metadata object. If none is passed it is assumed to be the name of the
 dataset passed in \code{.df}.}
 
 \item{verbose}{The action the function takes when a variable isn't typed
 properly. Options are 'stop', 'warn', 'message', and 'none'}
+
+\item{metacore}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Previously used to pass metadata now renamed with \code{metadata}}
 }
 \value{
 Returns the modified table.
@@ -33,18 +36,18 @@ Current assumptions:
 columns_meta is a data.frame with names "Variables", "Type"
 }
 \examples{
-metacore <- data.frame(
+metadata <- data.frame(
   dataset = "test",
   variable = c("Subj", "Param", "Val", "NotUsed"),
   type = c("numeric", "character", "numeric", "character")
 )
 
 .df <- data.frame(
- Subj = as.character(123, 456, 789),
- Different = c("a", "b", "c"),
- Val = c("1", "2", "3"),
- Param = c("param1", "param2", "param3")
+  Subj = as.character(123, 456, 789),
+  Different = c("a", "b", "c"),
+  Val = c("1", "2", "3"),
+  Param = c("param1", "param2", "param3")
 )
 
-df2 <- xportr_type(.df, metacore, "test")
+df2 <- xportr_type(.df, metadata, "test")
 }

@@ -3,11 +3,12 @@
 #' Assigns a SAS format from a variable level metadata to a given data frame.
 #'
 #' @param .df A data frame of CDISC standard.
-#' @param metacore A data frame containing variable level metadata.
+#' @param metadata A data frame containing variable level metadata.
 #' @param domain A character value to subset the `.df`. If `NULL`(default), uses
 #'   `.df` value as a subset condition.
 #' @param verbose The action the function takes when a variable label isn't.
 #'   found. Options are 'stop', 'warn', 'message', and 'none'
+#' @param metacore `r lifecycle::badge("deprecated")` Previously used to pass metadata now renamed with `metadata`
 #'
 #' @return Data frame with `SASformat` attributes for each variable.
 #' @family metadata functions
@@ -19,69 +20,72 @@
 #'   USUBJID = c(1001, 1002, 1003),
 #'   BRTHDT = c(1, 1, 2)
 #' )
-#' 
-#' metacore <- data.frame(
+#'
+#' metadata <- data.frame(
 #'   dataset = c("adsl", "adsl"),
 #'   variable = c("USUBJID", "BRTHDT"),
 #'   format = c(NA, "DATE9.")
 #' )
 #'
-#' adsl <- xportr_format(adsl, metacore)
-xportr_format <- function(.df, metacore, domain = NULL, verbose = getOption("xportr.format_verbose", "none")) {
-  
+#' adsl <- xportr_format(adsl, metadata)
+xportr_format <- function(.df,
+                          metadata = NULL,
+                          domain = NULL,
+                          verbose = getOption("xportr.length_verbose", "none"),
+                          metacore = deprecated()) {
+  if (!missing(metacore)) {
+    lifecycle::deprecate_warn(
+      when = "0.3.0",
+      what = "xportr_format(metacore = )",
+      with = "xportr_format(metadata = )"
+    )
+    metadata <- metacore
+  }
   domain_name <- getOption("xportr.domain_name")
   format_name <- getOption("xportr.format_name")
   variable_name <- getOption("xportr.variable_name")
-  
-  
-  df_arg <- as_name(enexpr(.df))
-  
-  if (!is.null(attr(.df, "_xportr.df_arg_"))) df_arg <- attr(.df, "_xportr.df_arg_")
-  else if (identical(df_arg, ".")) {
-    attr(.df, "_xportr.df_arg_") <- get_pipe_call()
-    df_arg <- attr(.df, "_xportr.df_arg_") 
-  }
-  
-  if (!is.null(domain) && !is.character(domain)) {
-    abort(c("`domain` must be a vector with type <character>.",
-            x = glue("Instead, it has type <{typeof(domain)}>."))
-    )
-  }
-  
-  df_arg <- domain %||% df_arg
-  
+
+  ## Common section to detect domain from argument or pipes
+
+  df_arg <- tryCatch(as_name(enexpr(.df)), error = function(err) NULL)
+  domain <- get_domain(.df, df_arg, domain)
   if (!is.null(domain)) attr(.df, "_xportr.df_arg_") <- domain
-  
-  if (inherits(metacore, "Metacore"))
-    metacore <- metacore$var_spec
-  
-  if (domain_name %in% names(metacore)) {
-    metadata <- metacore %>%
-      dplyr::filter(!!sym(domain_name) == df_arg & !is.na(!!sym(format_name)))
-  } else {
-    metadata <- metacore
+
+  ## End of common section
+
+  metadata <- metadata %||%
+    attr(.df, "_xportr.df_metadata_") %||%
+    rlang::abort("Metadata must be set with `metadata` or `xportr_metadata()`")
+
+  if (inherits(metadata, "Metacore")) {
+    metadata <- metadata$var_spec
   }
-  
+
+  if (domain_name %in% names(metadata)) {
+    metadata <- metadata %>%
+      dplyr::filter(!!sym(domain_name) == domain & !is.na(!!sym(format_name)))
+  } else {
+    metadata <- metadata
+  }
+
   filtered_metadata <- metadata %>%
     filter(!!sym(variable_name) %in% names(.df))
 
-  
+
   format <- filtered_metadata %>%
-    select(!!sym(format_name))  %>%
+    select(!!sym(format_name)) %>%
     unlist() %>%
     toupper()
 
   names(format) <- filtered_metadata[[variable_name]]
-  
-  for (i in names(format)) {
-    attr(.df[[i]], "format.sas")  <- format[[i]]
-  }
-  
-  # Convert NA formats to "" for haven
+
   for (i in seq_len(ncol(.df))) {
-    if (is.na(attr(.df[[i]], "format.sas")) || is.null(attr(.df[[i]], "format.sas"))) 
-      attr(.df[[i]], "format.sas") <- ""
+    format_sas <- purrr::pluck(format, colnames(.df)[i])
+    if (is.na(format_sas) || is.null(format_sas)) {
+      format_sas <- ""
+    }
+    attr(.df[[i]], "format.sas") <- format_sas
   }
-  
+
   .df
 }
