@@ -5,7 +5,7 @@ output:
     toc: true
     check_title: TRUE
 vignette: >
-  %\VignetteIndexEntry{Getting Started}
+  %\VignetteIndexEntry{xportr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,6 +17,17 @@ knitr::opts_chunk$set(
 )
 
 library(DT)
+
+options(cli.num_colors = 1)
+
+options(
+  xportr.variable_name = "variable",
+  xportr.label = "label",
+  xportr.type_name = "type",
+  xportr.format = "format",
+  xportr.length = "length",
+  xportr.order_name = "order"
+)
 ```
 
 ```{r, include=FALSE}
@@ -45,7 +56,7 @@ The `ADSL` has the following features:
 * Data types other than character and numeric
 * Missing labels on variables
 * Missing label for data set
-* Order of varibles not following specification file
+* Order of variables not following specification file
 * Formats missing
 
 To create a fully compliant v5 xpt `ADSL` dataset, that was developed using R, we will need to apply the 6 main functions within the `xportr` package:

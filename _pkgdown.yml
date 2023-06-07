@@ -18,7 +18,6 @@ navbar:
       href: https://pharmaverse.slack.com/archives/C030EB2M4GM
       aria-label: slack
 
-
 reference:
 - title: The six core xportr functions
 - contents:
@@ -40,10 +39,10 @@ reference:
   - xportr_df_label
   - xportr_metadata
 
-- title: xportr
-  navbar: ~
-  contents:
-  - xportr
+- title: xportr example datasets and specification files
+- contents:
+  - adsl
+  - var_spec
 
 - title: internal
   contents:
@@ -53,4 +52,9 @@ reference:
   - minimal_table
 
 
+articles:
+- title: ~
+  navbar: ~
+  contents:
+    - deepdive
 
