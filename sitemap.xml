@@ -34,9 +34,6 @@
     <loc>https://atorus-research.github.io/xportr/reference/adsl.html</loc>
   </url>
   <url>
-    <loc>https://atorus-research.github.io/xportr/reference/cli_theme_tests.html</loc>
-  </url>
-  <url>
     <loc>https://atorus-research.github.io/xportr/reference/expect_attr_width.html</loc>
   </url>
   <url>
@@ -49,10 +46,19 @@
     <loc>https://atorus-research.github.io/xportr/reference/length_log.html</loc>
   </url>
   <url>
+    <loc>https://atorus-research.github.io/xportr/reference/local_cli_theme.html</loc>
+  </url>
+  <url>
     <loc>https://atorus-research.github.io/xportr/reference/minimal_metadata.html</loc>
   </url>
   <url>
     <loc>https://atorus-research.github.io/xportr/reference/minimal_table.html</loc>
+  </url>
+  <url>
+    <loc>https://atorus-research.github.io/xportr/reference/multiple_vars_in_spec_helper.html</loc>
+  </url>
+  <url>
+    <loc>https://atorus-research.github.io/xportr/reference/multiple_vars_in_spec_helper2.html</loc>
   </url>
   <url>
     <loc>https://atorus-research.github.io/xportr/reference/type_log.html</loc>

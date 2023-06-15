@@ -128,7 +128,7 @@
 <li>Coerces variables to only numeric or character types</li>
 <li>Display format support for numeric float and date/time values</li>
 <li>Variables names are ≤ 8 characters.</li>
-<li>Variable labels are ≤ 200 characters.</li>
+<li>Variable labels are ≤ 40 characters.</li>
 <li>Data set labels are ≤ 40 characters.</li>
 <li>Presence of non-ASCII characters in Variable Names, Labels or data set labels.</li>
 </ul>
@@ -148,7 +148,7 @@
 <li>Apply a dataset label</li>
 <li>Write out a version 5 xpt file</li>
 </ul>
-<p>All of which can be done using a well-defined specification file and the <code>xportr</code> package!</p>
+<p>All of which can be done using a well-defined specification file and the <a href="https://github.com/atorus-research/xportr" class="external-link">xportr</a> package!</p>
 <p>First we will start with our <code>ADSL</code> dataset created in R. This example <code>ADSL</code> dataset is taken from the <a href="https://pharmaverse.github.io/admiral/index.html" class="external-link"><code>{admiral}</code></a> package. The script that generates this <code>ADSL</code> dataset can be created by using this command <code>admiral::use_ad_template("adsl")</code>. This <code>ADSL</code> dataset has 306 observations and 48 variables.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -163,8 +163,17 @@
 <span><span class="va">var_spec</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_xlsx</a></span><span class="op">(</span><span class="va">spec_path</span>, sheet <span class="op">=</span> <span class="st">"Variables"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Data Type"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="va">tolower</span><span class="op">)</span></span></code></pre></div>
-<p>Each <code>xportr_</code> function has been written in a way to take in a part of the specification file and apply that piece to the dataset.</p>
+<p>Each <code>xportr_</code> function has been written in a way to take in a part of the specification file and apply that piece to the dataset. Setting <code>verbose = "warn"</code> will send appropriate warning message to the console. We have suppressed the warning for the sake of brevity.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">adsl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/xportr_type.html">xportr_type</a></span><span class="op">(</span><span class="va">var_spec</span>, <span class="st">"ADSL"</span>, verbose <span class="op">=</span> <span class="st">"warn"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/xportr_length.html">xportr_length</a></span><span class="op">(</span><span class="va">var_spec</span>, <span class="st">"ADSL"</span>, verbose <span class="op">=</span> <span class="st">"warn"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/xportr_label.html">xportr_label</a></span><span class="op">(</span><span class="va">var_spec</span>, <span class="st">"ADSL"</span>, verbose <span class="op">=</span> <span class="st">"warn"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/xportr_order.html">xportr_order</a></span><span class="op">(</span><span class="va">var_spec</span>, <span class="st">"ADSL"</span>, verbose <span class="op">=</span> <span class="st">"warn"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/xportr_format.html">xportr_format</a></span><span class="op">(</span><span class="va">var_spec</span>, <span class="st">"ADSL"</span>, verbose <span class="op">=</span> <span class="st">"warn"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/xportr_write.html">xportr_write</a></span><span class="op">(</span><span class="st">"adsl.xpt"</span>, label <span class="op">=</span> <span class="st">"Subject-Level Analysis Dataset"</span><span class="op">)</span></span></code></pre></div>
+<p>The <code><a href="reference/xportr_metadata.html">xportr_metadata()</a></code> function can reduce duplication by setting the variable specification and domain explicitly at the top of a pipeline. If you would like to use the <code>verbose</code> argument, you will need to set in each function call.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adsl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/xportr_metadata.html">xportr_metadata</a></span><span class="op">(</span><span class="va">var_spec</span>, <span class="st">"ADSL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/xportr_type.html">xportr_type</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
