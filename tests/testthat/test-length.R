@@ -5,7 +5,6 @@
 #' * Result of call will create `SASlength` attribute (`width` for each
 #' variable)
 
-
 test_that("xportr_length: Accepts valid domain names in metadata object", {
   adsl <- minimal_table(30)
   metadata <- minimal_metadata(dataset = TRUE, length = TRUE, var_names = colnames(adsl))
@@ -45,7 +44,7 @@ test_that("xportr_length: Accepts valid domain names in metadata object", {
 test_that("xportr_length: CDISC data frame is being piped after another xportr function", {
   adsl <- minimal_table(30)
   metadata <- minimal_metadata(
-    dataset = TRUE, length = TRUE, type = TRUE, var_names = colnames(adsl)
+    dataset = TRUE, length = TRUE, type = TRUE, format = TRUE, var_names = colnames(adsl)
   )
 
   # Setup temporary options with active verbose
@@ -68,9 +67,7 @@ test_that("xportr_length: CDISC data frame domain is being recognized from pipe"
   withr::local_options(list(xportr.length_verbose = "message"))
 
   # Remove empty lines in cli theme
-  withr::local_options(list(cli.user_theme = cli_theme_tests))
-  app <- cli::start_app(output = "message", .auto_close = FALSE)
-  withr::defer(cli::stop_app(app))
+  local_cli_theme()
 
   # With domain manually set
   not_adsl <- adsl
@@ -108,9 +105,7 @@ test_that("xportr_length: Impute character lengths based on class", {
   withr::local_options(list(xportr.character_types = c("character", "date")))
 
   # Remove empty lines in cli theme
-  withr::local_options(list(cli.user_theme = cli_theme_tests))
-  app <- cli::start_app(output = "message", .auto_close = FALSE)
-  withr::defer(cli::stop_app(app))
+  local_cli_theme()
 
   # Test length imputation of character and numeric (not valid character type)
   result <- adsl %>%
@@ -142,9 +137,7 @@ test_that("xportr_length: Throws message when variables not present in metadata"
   # Setup temporary options with `verbose = "message"`
   withr::local_options(list(xportr.length_verbose = "message"))
   # Remove empty lines in cli theme
-  withr::local_options(list(cli.user_theme = cli_theme_tests))
-  app <- cli::start_app(output = "message", .auto_close = FALSE)
-  withr::defer(cli::stop_app(app))
+  local_cli_theme()
 
   # Test that message is given which indicates that variable is not present
   xportr_length(adsl, metadata) %>%
@@ -220,4 +213,14 @@ test_that("xportr_length: error when metadata is not set", {
     xportr_length(adsl),
     regexp = "Metadata must be set with `metadata` or `xportr_metadata\\(\\)`"
   )
+})
+
+test_that("xportr_length: Gets warning when metadata has multiple rows with same variable", {
+  # This test uses the (2) functions below to reduce code duplication
+  # All `expect_*` are being called inside the functions
+  #
+  # Checks that message appears when xportr.domain_name is invalid
+  multiple_vars_in_spec_helper(xportr_length)
+  # Checks that message doesn't appear when xportr.domain_name is valid
+  multiple_vars_in_spec_helper2(xportr_length)
 })

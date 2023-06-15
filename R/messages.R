@@ -77,21 +77,21 @@ var_names_log <- function(tidy_names_df, verbose) {
 #' @export
 type_log <- function(meta_ordered, type_mismatch_ind, verbose) {
   if (length(type_mismatch_ind) > 0) {
+    cli_h2("Variable type mismatches found.")
+    cli_alert_success("{ length(type_mismatch_ind) } variables coerced")
+
     message <- glue(
       "Variable type(s) in dataframe don't match metadata: ",
       "{encode_vars(meta_ordered[type_mismatch_ind, 'variable'])}"
     )
 
     xportr_logger(message, verbose)
-
-    cli_h2("Variable type mismatches found.")
-    cli_alert_success("{ length(type_mismatch_ind) } variables coerced")
   }
 }
 
 #' Utility for Lengths
 #'
-#' @param miss_vars Variables missing from metatdata
+#' @param miss_vars Variables missing from metadata
 #' @param verbose Provides additional messaging for user
 #'
 #' @return Output to Console

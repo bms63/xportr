@@ -8,9 +8,9 @@
 #' @param path Path where transport file will be written. File name sans will be
 #'   used as `xpt` name.
 #' @param label Dataset label. It must be <=40 characters.
-#' @param strict_checks If TRUE, xpt validation will report errors and not
-#'  write out the dataset. If FALSE, xpt validation will report warnings and continue
-#'  with writing out the dataset. Defaults to FALSE
+#' @param strict_checks If TRUE, xpt validation will report errors and not write
+#'   out the dataset. If FALSE, xpt validation will report warnings and continue
+#'   with writing out the dataset. Defaults to FALSE
 #'
 #' @details
 #'   * Variable and dataset labels are stored in the "label" attribute.
@@ -60,7 +60,17 @@ xportr_write <- function(.df, path, label = NULL, strict_checks = FALSE) {
 
   data <- as.data.frame(.df)
 
-  write_xpt(data, path = path, version = 5, name = name)
+  tryCatch(
+    write_xpt(data, path = path, version = 5, name = name),
+    error = function(err) {
+      rlang::abort(
+        paste0(
+          "Error reported by haven::write_xpt, error was: \n",
+          err
+        )
+      )
+    }
+  )
 
   invisible(data)
 }
