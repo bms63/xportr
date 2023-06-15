@@ -245,7 +245,7 @@ datatable(
 
 ## `xportr_type()`
 
-We are going to explore the type column in the metadata object. A submission to a Health Authority should only have character and numeric types in the data. In the  `ADSL` data we  have several columns that are in the Date type: `TRTSDT`, `TRTEDT`, `DISONSDT`, `VISIT1DT` and `RFENDT`. We will change one variable type to a [factor variable](https://forcats.tidyverse.org/), which is a common data structure in R, to give us some educational opportunities. 
+We are going to explore the type column in the metadata object. A submission to a Health Authority should only have character and numeric types in the data. In the  `ADSL` data we  have several columns that are in the Date type: `TRTSDT`, `TRTEDT`, `DISONSDT`, `VISIT1DT` and `RFENDT` - under the hood these are actually numeric values and will be left as is. We will change one variable type to a [factor variable](https://forcats.tidyverse.org/), which is a common data structure in R, to give us some educational opportunities to see `xportr_type()` in action. 
 
 ```{r}
 adsl_fct <- adsl %>%
@@ -270,7 +270,7 @@ adsl_type_glimpse <- adsl_type %>%
   select(STUDYID, TRTSDT, TRTEDT, DISONSDT, VISIT1DT, RFENDT)
 ```
 
-Success! As we can see below, `xportr_type()` applied the types from the metadata object to the below columns converting them all to the proper type. The functions in `{xportr}` also display this coercion to the user in the console, which is seen above.  
+Success! As we can see below, `xportr_type()` applied the types from the metadata object to the `STUDYID` variables converting to the proper type. The functions in `{xportr}` also display this coercion to the user in the console, which is seen above.  
 
 ```{r, echo = TRUE}
 glimpse(adsl_type_glimpse)
@@ -385,7 +385,7 @@ This example is slightly different from previous examples. You will need to use 
 ```{r, echo = TRUE}
 adsl_fmt <- adsl %>%
   xportr_type(metadata = var_spec, domain = "ADSL", verbose = "warn") %>%
-  xportr_format(metadata = var_spec, domain = "ADSL", verbose = "warn")
+  xportr_format(metadata = var_spec, domain = "ADSL")
 ```
 
 Success! We have taken the metadata formats and applied them to the dataset. Please inspect variables like `TRTSDT` or `DISONSDT` to see the `DATE9.` format being applied.
@@ -394,7 +394,7 @@ Success! We have taken the metadata formats and applied them to the dataset. Ple
 str(adsl_fmt)
 ```
 
-At the time of `{xportr} v0.3.0` we have not implemented any warnings or error messaging for this function. However, `xportr_write()` through `xpt_validate()` will check that formats have been applied for Date-Time variables.
+At the time of `{xportr} v0.3.0` we have not implemented any warnings or error messaging for this function. However, `xportr_write()` through `xpt_validate()` will check that formats applied are valid SAS formats.
 
 ## `xportr_write()`
 
